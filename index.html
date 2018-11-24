@@ -1,15 +1,60 @@
 <!DOCTYPE html>
  <html>
-   <head>
-<meta charset="utf‐8">
+<head>
+  <meta charset="utf‐8">
 <title> Hello web audio </title> </head>
 <body>
-   </body>
-   <script>
-   		var audioCtx = new (window.AudioContext || window.webkitAudioContext);
-   		var sine = audioCtx.createOscillator();
-       sine.frequency();
-   		sine.start();
-		sine.connect(audioCtx.destination);
-   </script>
+  <input type="button" name="start-stop" value="II" />
+  <input type="range" name="frequency" min=10 max=1000>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+  crossorigin="anonymous"></script>
+<script>
+  // hooks
+  var $startStop = $("input[name=start-stop");
+  var $frequency = $("input[name=frequency]");
+
+  var running = false;
+  var sine;
+  var l = 50;
+  var audioCtx;
+
+  // event listeners
+
+  $startStop.one('click',function(){
+    audioCtx = new AudioContext() || webkitAudioContext();
+    console.log(audioCtx);
+    audioCtx.suspend().then(
+    audioCtx.resume().then(()=> {init()}));
+  })
+
+  function init() {
+    $startStop.on("click",function() {
+      if(!running) {
+        sine = audioCtx.createOscillator();
+        sine.connect(audioCtx.destination);
+        l = l + 10;
+        console.log(sine);
+        sine.start();
+        running = true;
+      } else {
+        sine.stop();
+        console.log('stopped');
+        running = false;
+      }
+    });
+
+    $frequency.on("input",function() {
+      sine.frequency.value = $frequency.val();
+    })
+  }
+
+
+  //sine.start();
+
+
+  
+</script>
 </html>
